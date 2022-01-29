@@ -93,7 +93,7 @@ export class WalletApi extends BaseApi {
   /** https://www.blockcypher.com/dev/bitcoin/#derive-address-in-wallet-endpoint */
   async deriveAddressInWallet(
     name: string,
-    params?: { subchain_index?: number; lookahead?: number },
+    params?: { count?: number; subchain_index?: number; lookahead?: number },
   ) {
     const response = await this.axios.post<Pick<HDWallet, 'chains'>>(
       `/wallets/hd/${name}/addresses/derive`,
