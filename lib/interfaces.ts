@@ -51,7 +51,13 @@ export interface TransactionInput {
   output_value?: number;
   script_type: ScriptType;
   script: string;
-  addresses: string[];
+  /** When sending from a wallet, this field is not required.
+   * Instead, supply `wallet_name` and `wallet_token` (your BlockCypher API token).
+   *
+   * From BlockCypher:
+   * > If you'd like, you can even use a Wallet instead of addresses as your input. You just need to use two non-standard fields (your wallet_name and wallet_token) within the inputs array in your transaction, instead of addresses
+   */
+  addresses?: string[];
   sequence: number;
   age?: number;
   wallet_name?: string;
@@ -133,12 +139,13 @@ interface TransactionReference {
 
 /** https://www.blockcypher.com/dev/bitcoin/#txskeleton */
 export interface TransactionSkeleton {
-  tx: Partial<Transaction>;
+  /** A temporary TX, usually returned fully filled but missing input scripts. */
+  tx: Transaction;
   tosign: string[];
-  signatures: string[];
-  pubkeys: string[];
-  tosign_tx: string[];
-  errors: string[];
+  signatures?: string[];
+  pubkeys?: string[];
+  tosign_tx?: string[];
+  errors?: string[];
 }
 
 /** https://www.blockcypher.com/dev/bitcoin/#txconfidence */
@@ -186,8 +193,7 @@ export interface AssetAddressKeychain extends AddressKeychain {
 /** https://www.blockcypher.com/dev/bitcoin/#address */
 export interface Address {
   address?: string;
-  wallet?: Wallet;
-  hd_wallet?: Wallet & Pick<HDWallet, 'hd'>;
+  wallet?: Wallet & { hd?: boolean };
   total_received: number;
   total_sent: number;
   balance: number;

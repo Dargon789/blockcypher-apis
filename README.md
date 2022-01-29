@@ -2,12 +2,7 @@
 
 > A simple BlockCypher API client made using Axios
 
-> A majority (primarily assets) of this API is untested because I have zero use for a lot of it, feel free to let me know any issues you come across, PRs, etc-- I'll fix them ASAP!
-
-TODOs:
-
-- Automatic testing
-- ETH implementation
+> Some parts of this library are completely untested, primarily the assets & metadata APIs. Feel free to make an issue or send a PR and I'll get to it ASAP
 
 ## Installation
 
@@ -30,9 +25,9 @@ const client = new Client({
 client.apis.transaction
   .getUnconfirmedTransactions()
   .then(console.log)
-  .catch((err) => {
-    if (err.isAxiosError) {
-      console.error(err.response.data);
-    } else console.error(err);
-  });
+  .catch(console.error);
 ```
+
+## Recipes
+
+Check [this directory](https://github.com/agent-ly/blockcypher-apis/tree/main/recipes) for some neat tools and integrations with other popular libraries such as [bitcoinjs-lib](https://github.com/bitcoinjs/bitcoinjs-lib)

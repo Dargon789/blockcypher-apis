@@ -1,11 +1,9 @@
-import { ecdsaSign, signatureExport } from 'secp256k1';
 import type {
   Transaction,
   TransactionInput,
   TransactionOutput,
   TransactionSkeleton,
   TransactionConfidence,
-  AddressKeychain,
   WitnessToSignTransaction,
 } from '../interfaces';
 import { BaseApi } from './base.api';
@@ -68,25 +66,10 @@ export class TransactionApi extends BaseApi {
   }
 
   /** https://www.blockcypher.com/dev/bitcoin/#creating-transactions */
-  async sendTransaction({
-    keychain,
-    transactionSkeleton,
-  }: {
-    keychain: Pick<AddressKeychain, 'public' | 'private'>;
-    transactionSkeleton: TransactionSkeleton;
-  }) {
-    transactionSkeleton.pubkeys = [];
-    transactionSkeleton.signatures = [];
-    for (const tosign of transactionSkeleton.tosign) {
-      transactionSkeleton.pubkeys.push(keychain.public);
-      transactionSkeleton.signatures.push(
-        Buffer.from(this.sign(tosign, keychain.private)).toString('hex'),
-      );
-    }
-    const response = await this.axios.post<Required<TransactionSkeleton>>(
-      '/txs/send',
-      transactionSkeleton,
-    );
+  async sendTransaction(transactionSkeleton: TransactionSkeleton) {
+    const response = await this.axios.post<
+      Pick<TransactionSkeleton, 'tx' | 'tosign'>
+    >('/txs/send', transactionSkeleton);
     return response.data;
   }
 
@@ -131,13 +114,5 @@ export class TransactionApi extends BaseApi {
       `/txs/${transactionHash}/confidence`,
     );
     return response.data;
-  }
-
-  private sign(dataHex: string, privKeyHex: string) {
-    const { signature } = ecdsaSign(
-      Buffer.from(dataHex, 'hex'),
-      Buffer.from(privKeyHex, 'hex'),
-    );
-    return signatureExport(signature);
   }
 }
