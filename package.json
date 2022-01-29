@@ -26,14 +26,14 @@
     "release": "release-it"
   },
   "dependencies": {
-    "axios": "^0.25.0"
+    "axios": "^0.25.0",
+    "secp256k1": "^4.0.2"
   },
   "devDependencies": {
     "@types/secp256k1": "^4.0.3",
     "prettier": "^2.4.1",
     "release-it": "^14.11.6",
     "rimraf": "^3.0.2",
-    "secp256k1": "^4.0.2",
     "ts-node": "^10.2.1",
     "ts-node-dev": "^1.1.8",
     "typescript": "^4.4.3"
