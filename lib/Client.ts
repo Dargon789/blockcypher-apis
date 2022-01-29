@@ -36,6 +36,12 @@ export interface TokenLimitsResponse {
   }[];
 }
 
+/**
+ * As per BlockCypher standards, all amounts are in satoshis!
+ *
+ * I've left some other useful notes around about certain
+ * intricacies of BlockCypher
+ */
 export class Client {
   public readonly axios: AxiosInstance;
   public readonly apis: {

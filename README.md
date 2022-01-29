@@ -2,9 +2,12 @@
 
 > A simple BlockCypher API client made using Axios
 
-> A majority of this API is untested because I have zero use for a lot of it, feel free to let me know any issues you come across!
+> A majority (primarily assets) of this API is untested because I have zero use for a lot of it, feel free to let me know any issues you come across, PRs, etc-- I'll fix them ASAP!
 
-TODO: Tests w/ test library
+TODOs:
+
+- Automatic testing
+- ETH implementation
 
 ## Installation
 

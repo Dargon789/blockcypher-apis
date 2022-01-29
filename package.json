@@ -3,6 +3,11 @@
   "author": "agent-ly",
   "version": "1.0.10",
   "license": "MIT",
+  "keywords": [
+    "bitcoin",
+    "blockcypher",
+    "bcy"
+  ],
   "files": [
     "dist/lib"
   ],
