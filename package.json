@@ -26,7 +26,7 @@
     "release": "release-it"
   },
   "dependencies": {
-    "axios": "^0.21.4"
+    "axios": "^0.25.0"
   },
   "devDependencies": {
     "@types/secp256k1": "^4.0.3",
