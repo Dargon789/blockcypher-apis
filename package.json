@@ -25,9 +25,11 @@
     "prerelease": "npm run build",
     "release": "release-it"
   },
+  "dependencies": {
+    "axios": "^0.21.4"
+  },
   "devDependencies": {
     "@types/secp256k1": "^4.0.3",
-    "axios": "^0.21.4",
     "prettier": "^2.4.1",
     "release-it": "^14.11.6",
     "rimraf": "^3.0.2",
