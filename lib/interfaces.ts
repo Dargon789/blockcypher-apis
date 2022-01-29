@@ -80,7 +80,7 @@ export interface Transaction {
   vsize: number;
   preference: 'high' | 'medium' | 'low';
   relayed_by: string;
-  received: Date;
+  received: string;
   ver: number;
   lock_time: number;
   double_spend: boolean;
@@ -91,7 +91,7 @@ export interface Transaction {
   outputs: TransactionOutput[];
   opt_in_rbf?: boolean;
   confidence?: number;
-  confirmed?: Date;
+  confirmed?: string;
   receive_count?: number;
   change_address?: boolean;
   block_hash?: string;
@@ -124,9 +124,9 @@ interface TransactionReference {
   script?: string;
   ref_balance?: number;
   confidence?: number;
-  confirmed?: Date;
+  confirmed?: string;
   spent_by?: string;
-  received?: Date;
+  received?: string;
   receive_count?: number;
   double_of?: string;
 }
@@ -213,6 +213,11 @@ export interface Wallet {
 /** https://www.blockcypher.com/dev/bitcoin/#hdaddress */
 export interface HDAddress {
   address: string;
+  /** Note that the path is relative.
+   * For example, if your wallet was made with `m/44'/0'/0'`
+   * a child with the path `m/44'/0'/0'/0`
+   * will appear as `m/0`
+   */
   path: string;
   public?: string;
 }
@@ -244,8 +249,8 @@ export interface OAPTransaction {
   ver: number;
   assetid: string;
   hash: string;
-  confirmed?: Date;
-  received: Date;
+  confirmed?: string;
+  received: string;
   oap_meta?: string;
   double_spend: boolean;
   inputs: TransactionInput[];

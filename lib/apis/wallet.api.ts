@@ -57,7 +57,7 @@ export class WalletApi extends BaseApi {
 
   /** https://www.blockcypher.com/dev/bitcoin/#get-wallet-addresses-endpoint */
   async getWalletAddresses(name: string) {
-    const response = await this.axios.get<string[]>(
+    const response = await this.axios.get<Pick<Wallet, 'addresses'>>(
       `/wallets/${name}/addresses`,
     );
     return response.data;
@@ -65,7 +65,7 @@ export class WalletApi extends BaseApi {
 
   /** https://www.blockcypher.com/dev/bitcoin/#get-wallet-addresses-endpoint */
   async getHDWalletAddresses(name: string) {
-    const response = await this.axios.get<string[]>(
+    const response = await this.axios.get<Pick<HDWallet, 'chains'>>(
       `/wallets/hd/${name}/addresses`,
     );
     return response.data;
