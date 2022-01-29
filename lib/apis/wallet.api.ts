@@ -82,6 +82,7 @@ export class WalletApi extends BaseApi {
   async generateAddressInWallet(name: string, bech32?: boolean) {
     const response = await this.axios.post<Wallet & AddressKeychain>(
       `/wallets/${name}/addresses/generate`,
+      undefined,
       {
         params: { bech32 },
       },
@@ -96,6 +97,7 @@ export class WalletApi extends BaseApi {
   ) {
     const response = await this.axios.post<Pick<HDWallet, 'chains'>>(
       `/wallets/hd/${name}/addresses/derive`,
+      undefined,
       {
         params,
       },

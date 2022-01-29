@@ -68,9 +68,13 @@ export class AddressApi extends BaseApi {
 
   /** https://www.blockcypher.com/dev/bitcoin/#generate-address-endpoint */
   async generateAddressKeychain(params?: { bech32?: boolean }) {
-    const response = await this.axios.post<AddressKeychain>('/addrs', {
-      params,
-    });
+    const response = await this.axios.post<AddressKeychain>(
+      '/addrs',
+      undefined,
+      {
+        params,
+      },
+    );
     return response.data;
   }
 
