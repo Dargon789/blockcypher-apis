@@ -22,5 +22,5 @@ export class WebhookApi extends BaseApi {
     await this.axios.delete(`/hooks/${webhookID}`);
   }
 
-  async verifyWebhook(pub: string, sig: string) {}
+  /*async verifyWebhook(pub: string, sig: string) {}*/
 }

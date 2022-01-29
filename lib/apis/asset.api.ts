@@ -1,7 +1,7 @@
 import type {
   Address,
   AssetAddressKeychain,
-  OApissue,
+  OAPIssue,
   OAPTransaction,
 } from '../interfaces';
 import { BaseApi } from './base.api';
@@ -15,7 +15,7 @@ export class AssetApi extends BaseApi {
   }
 
   /** https://www.blockcypher.com/dev/bitcoin/#issue-asset-endpoint */
-  async issueAsset(oapIssue: OApissue) {
+  async issueAsset(oapIssue: OAPIssue) {
     const response = await this.axios.post<OAPTransaction>(
       '/oap/issue',
       oapIssue,
@@ -24,7 +24,7 @@ export class AssetApi extends BaseApi {
   }
 
   /** https://www.blockcypher.com/dev/bitcoin/#transfer-asset-endpoint */
-  async transferAsset(assetId: string, oapIssue: OApissue) {
+  async transferAsset(assetId: string, oapIssue: OAPIssue) {
     const response = await this.axios.post<OAPTransaction>(
       `/oap/${assetId}/transfer`,
       oapIssue,

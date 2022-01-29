@@ -186,8 +186,8 @@ export interface AssetAddressKeychain extends AddressKeychain {
 /** https://www.blockcypher.com/dev/bitcoin/#address */
 export interface Address {
   address?: string;
-  wallet?: string;
-  hd_wallet?: string;
+  wallet?: Wallet;
+  hd_wallet?: Wallet & Pick<HDWallet, 'hd'>;
   total_received: number;
   total_sent: number;
   balance: number;
@@ -214,13 +214,13 @@ export interface Wallet {
 export interface HDAddress {
   address: string;
   path: string;
-  public: string;
+  public?: string;
 }
 
 /** https://www.blockcypher.com/dev/bitcoin/#hdchain*/
 export interface HDChain {
   chain_addresses: HDAddress[];
-  index: number;
+  index?: number;
 }
 
 /** https://www.blockcypher.com/dev/bitcoin/#hdwallet */
@@ -228,15 +228,15 @@ export interface HDWallet extends Pick<Wallet, 'token' | 'name'> {
   chains: HDChain[];
   hd: boolean;
   extended_public_key: string;
-  subchain_indexes: number[];
+  subchain_indexes?: number[];
 }
 
 /** https://www.blockcypher.com/dev/bitcoin/#oapissue */
-export interface OApissue {
+export interface OAPIssue {
   from_private: string;
   to_address: string;
   amount: number;
-  metdata: string;
+  metdata?: string;
 }
 
 /** https://www.blockcypher.com/dev/bitcoin/#oaptx */
@@ -244,9 +244,9 @@ export interface OAPTransaction {
   ver: number;
   assetid: string;
   hash: string;
-  confirmed: Date;
+  confirmed?: Date;
   received: Date;
-  oap_meta: string;
+  oap_meta?: string;
   double_spend: boolean;
   inputs: TransactionInput[];
   outputs: TransactionOutput[];
