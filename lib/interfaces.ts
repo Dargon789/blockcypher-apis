@@ -135,10 +135,7 @@ interface TransactionReference {
   double_of?: string;
 }
 
-/** View these links for helpful resources:
- * https://www.blockcypher.com/dev/bitcoin/#txskeleton
- * https://www.blockcypher.com/dev/bitcoin/#customizing-transaction-requests
- */
+/** https://www.blockcypher.com/dev/bitcoin/#txskeleton */
 export interface TransactionSkeleton {
   /** A temporary TX, usually returned fully filled but missing input scripts. */
   tx: Transaction;

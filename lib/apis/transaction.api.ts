@@ -50,14 +50,25 @@ export class TransactionApi extends BaseApi {
     return response.data;
   }
 
-  /** https://www.blockcypher.com/dev/bitcoin/#creating-transactions */
+  /**
+   * https://www.blockcypher.com/dev/bitcoin/#creating-transactions
+   * https://www.blockcypher.com/dev/bitcoin/#customizing-transaction-requests
+   */
   async newTransaction(
     payload: {
+      preference?: 'high' | 'medium' | 'low';
+      fee?: number;
+      change_address?: string;
+      confirmations?: number;
       inputs: Pick<
         TransactionInput,
-        'addresses' | 'wallet_name' | 'wallet_token'
+        | 'addresses'
+        | 'prev_hash'
+        | 'output_index'
+        | 'wallet_name'
+        | 'wallet_token'
       >[];
-      outputs: Pick<TransactionOutput, 'addresses' | 'value'>[];
+      outputs: Pick<TransactionOutput, 'addresses' | 'value' | 'script_type'>[];
     },
     params?: { includeToSignTx?: boolean },
   ) {
@@ -69,7 +80,7 @@ export class TransactionApi extends BaseApi {
     return response.data;
   }
 
-  /** https://www.blockcypher.com/dev/bitcoin/#creating-transactions */
+  /** https://www.blockcypher.com/dev/bitcoin/#send-transaction-endpoint */
   async sendTransaction(transactionSkeleton: TransactionSkeleton) {
     const response = await this.axios.post<
       Pick<TransactionSkeleton, 'tx' | 'tosign'>
