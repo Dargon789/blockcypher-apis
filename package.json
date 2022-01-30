@@ -5,8 +5,8 @@
   "license": "MIT",
   "keywords": [
     "bitcoin",
-    "blockcypher",
-    "bcy"
+    "bitcoinjs-lib",
+    "blockcypher"
   ],
   "files": [
     "dist/lib"

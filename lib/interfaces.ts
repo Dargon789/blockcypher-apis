@@ -62,6 +62,8 @@ export interface TransactionInput {
   age?: number;
   wallet_name?: string;
   wallet_token?: string;
+  /** This field is not documented sadly, but its really convenient! */
+  hd_path?: string;
 }
 
 /** https://www.blockcypher.com/dev/bitcoin/#txoutput */
