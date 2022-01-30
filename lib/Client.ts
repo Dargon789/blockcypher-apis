@@ -1,4 +1,4 @@
-import Axios, { AxiosInstance } from 'axios';
+import Axios, { AxiosError, AxiosInstance } from 'axios';
 import type { Chain, Coin } from './types';
 import * as Apis from './apis';
 
@@ -6,6 +6,10 @@ export interface ClientOptions {
   coin: Coin;
   chain: Chain;
   token?: string;
+}
+
+export interface BlockCypherError {
+  error: string;
 }
 
 export interface FaucetResponse {
@@ -59,6 +63,25 @@ export class Client {
     this.axios = Axios.create({
       baseURL: `https://api.blockcypher.com/v1/${clientOptions.coin}/${clientOptions.chain}`,
       params: { token: clientOptions.token },
+    });
+
+    this.axios.interceptors.response.use(undefined, (error: AxiosError) => {
+      if (error.response) {
+        let data: string | BlockCypherError | { errors: BlockCypherError[] } =
+          error.response.data;
+        if (typeof data === 'string') {
+          const matches = data.match(/\{([^}]+)\}/g);
+          if (!matches) return Promise.reject(new Error(data));
+          const errors: BlockCypherError[] = matches.map((match) =>
+            JSON.parse(match),
+          );
+          return Promise.reject(new AggregateError(errors, error.message));
+        } else if ('error' in data)
+          return Promise.reject(new Error(data.error));
+        else
+          return Promise.reject(new AggregateError(data.errors, error.message));
+      }
+      return Promise.reject(error);
     });
 
     this.apis = {

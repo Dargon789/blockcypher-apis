@@ -1,27 +1,47 @@
 import type { ScriptType } from '../types';
 import type {
   Transaction,
-  TransactionInput,
-  TransactionOutput,
   TransactionSkeleton,
   TransactionConfidence,
   WitnessToSignTransaction,
 } from '../interfaces';
 import { BaseApi } from './base.api';
 
-export interface TransactionPropogationResponse {
-  transaction: string;
-  first_location: AggregatedOrigin;
-  first_city: string;
-  first_country: string;
-  aggregated_origin: AggregatedOrigin;
-  aggregated_origin_radius: number;
-  first_received: string;
+export interface NewTransactionInput {
+  addresses?: string[];
+  prev_hash?: string;
+  output_index?: number;
+  wallet_name?: string;
+  wallet_token?: string;
+}
+
+export interface NewTransactionOutput {
+  addresses: string[];
+  value: number;
+  script_type?: ScriptType;
+}
+
+export interface NewTransactionPayload {
+  preference?: 'high' | 'medium' | 'low';
+  fee?: number;
+  change_address?: string;
+  inputs: NewTransactionInput[];
+  outputs: NewTransactionOutput[];
 }
 
 export interface AggregatedOrigin {
   latitude: number;
   longitude: number;
+}
+
+export interface TransactionPropogationResponse {
+  transaction: string;
+  first_location: AggregatedOrigin;
+  first_city?: string;
+  first_country: string;
+  aggregated_origin: AggregatedOrigin;
+  aggregated_origin_radius: number;
+  first_received: string;
 }
 
 /** https://www.blockcypher.com/dev/bitcoin/#transaction-api */
@@ -56,24 +76,7 @@ export class TransactionApi extends BaseApi {
    * https://www.blockcypher.com/dev/bitcoin/#customizing-transaction-requests
    */
   async newTransaction(
-    payload: {
-      preference?: 'high' | 'medium' | 'low';
-      fee?: number;
-      change_address?: string;
-      confirmations?: number;
-      inputs: Pick<
-        TransactionInput,
-        | 'addresses'
-        | 'prev_hash'
-        | 'output_index'
-        | 'wallet_name'
-        | 'wallet_token'
-      >[];
-      outputs: Pick<TransactionOutput, 'addresses' | 'value'> &
-        {
-          script_type?: ScriptType;
-        }[];
-    },
+    payload: NewTransactionPayload,
     params?: { includeToSignTx?: boolean },
   ) {
     const response = await this.axios.post<TransactionSkeleton>(

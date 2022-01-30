@@ -4,14 +4,14 @@ export type Metadata = Record<string, string | number>;
 
 export type MetadataType = 'addrs' | 'txs' | 'blocks';
 
+export interface MetadataParams {
+  private?: boolean;
+}
+
 /** https://www.blockcypher.com/dev/bitcoin/#metadata-api */
 export class MetadataApi extends BaseApi {
   /** https://www.blockcypher.com/dev/bitcoin/#get-metadata-endpoint */
-  async getMedata(
-    type: MetadataType,
-    value: string,
-    params?: { private?: boolean },
-  ) {
+  async getMedata(type: MetadataType, value: string, params?: MetadataParams) {
     const response = await this.axios.get<Metadata>(`${type}/${value}/meta`, {
       params,
     });
@@ -23,7 +23,7 @@ export class MetadataApi extends BaseApi {
     type: MetadataType,
     value: string,
     metadata: Metadata,
-    params?: { private?: boolean },
+    params?: MetadataParams,
   ) {
     await this.axios.put<Metadata>(`${type}/${value}/meta`, metadata, {
       params,

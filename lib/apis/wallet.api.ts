@@ -54,9 +54,8 @@ export class WalletApi extends BaseApi {
   ) {
     const response = await this.axios.post<Wallet>(
       `/wallets/${name}/addresses`,
-      {
-        addresses,
-      },
+      { addresses },
+      { params },
     );
     return response.data;
   }
@@ -73,8 +72,8 @@ export class WalletApi extends BaseApi {
   async getHDWalletAddresses(
     name: string,
     params?: {
-      used: boolean;
-      zerobalance: boolean;
+      used?: boolean;
+      zerobalance?: boolean;
     },
   ) {
     const response = await this.axios.get<Pick<HDWallet, 'chains'>>(
