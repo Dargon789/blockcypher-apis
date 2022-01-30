@@ -7,9 +7,13 @@ export type MetadataType = 'addrs' | 'txs' | 'blocks';
 /** https://www.blockcypher.com/dev/bitcoin/#metadata-api */
 export class MetadataApi extends BaseApi {
   /** https://www.blockcypher.com/dev/bitcoin/#get-metadata-endpoint */
-  async getMedata(type: MetadataType, value: string, isPrivate?: boolean) {
+  async getMedata(
+    type: MetadataType,
+    value: string,
+    params?: { private?: boolean },
+  ) {
     const response = await this.axios.get<Metadata>(`${type}/${value}/meta`, {
-      params: { private: isPrivate },
+      params,
     });
     return response.data;
   }
@@ -19,10 +23,10 @@ export class MetadataApi extends BaseApi {
     type: MetadataType,
     value: string,
     metadata: Metadata,
-    isPrivate?: boolean,
+    params?: { private?: boolean },
   ) {
     await this.axios.put<Metadata>(`${type}/${value}/meta`, metadata, {
-      params: { private: isPrivate },
+      params,
     });
   }
 

@@ -51,16 +51,20 @@ export class TransactionApi extends BaseApi {
   }
 
   /** https://www.blockcypher.com/dev/bitcoin/#creating-transactions */
-  async newTransaction(payload: {
-    inputs: Pick<
-      TransactionInput,
-      'addresses' | 'wallet_name' | 'wallet_token'
-    >[];
-    outputs: Pick<TransactionOutput, 'addresses' | 'value'>[];
-  }) {
+  async newTransaction(
+    payload: {
+      inputs: Pick<
+        TransactionInput,
+        'addresses' | 'wallet_name' | 'wallet_token'
+      >[];
+      outputs: Pick<TransactionOutput, 'addresses' | 'value'>[];
+    },
+    params?: { includeToSignTx?: boolean },
+  ) {
     const response = await this.axios.post<TransactionSkeleton>(
       '/txs/new',
       payload,
+      { params },
     );
     return response.data;
   }

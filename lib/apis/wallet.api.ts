@@ -45,7 +45,13 @@ export class WalletApi extends BaseApi {
   }
 
   /** https://www.blockcypher.com/dev/bitcoin/#add-addresses-to-wallet-endpoint */
-  async addAddressesToWallet(name: string, addresses: string[]) {
+  async addAddressesToWallet(
+    name: string,
+    addresses: string[],
+    params?: {
+      omitWalletAddresses?: boolean;
+    },
+  ) {
     const response = await this.axios.post<Wallet>(
       `/wallets/${name}/addresses`,
       {
@@ -64,9 +70,16 @@ export class WalletApi extends BaseApi {
   }
 
   /** https://www.blockcypher.com/dev/bitcoin/#get-wallet-addresses-endpoint */
-  async getHDWalletAddresses(name: string) {
+  async getHDWalletAddresses(
+    name: string,
+    params?: {
+      used: boolean;
+      zerobalance: boolean;
+    },
+  ) {
     const response = await this.axios.get<Pick<HDWallet, 'chains'>>(
       `/wallets/hd/${name}/addresses`,
+      { params },
     );
     return response.data;
   }
@@ -79,12 +92,12 @@ export class WalletApi extends BaseApi {
   }
 
   /** https://www.blockcypher.com/dev/bitcoin/#generate-address-in-wallet-endpoint */
-  async generateAddressInWallet(name: string, bech32?: boolean) {
+  async generateAddressInWallet(name: string, params?: { bech32?: boolean }) {
     const response = await this.axios.post<Wallet & AddressKeychain>(
       `/wallets/${name}/addresses/generate`,
       undefined,
       {
-        params: { bech32 },
+        params,
       },
     );
     return response.data;
