@@ -1,3 +1,4 @@
+import type { ScriptType } from '../types';
 import type {
   Transaction,
   TransactionInput,
@@ -68,7 +69,10 @@ export class TransactionApi extends BaseApi {
         | 'wallet_name'
         | 'wallet_token'
       >[];
-      outputs: Pick<TransactionOutput, 'addresses' | 'value' | 'script_type'>[];
+      outputs: Pick<TransactionOutput, 'addresses' | 'value'> &
+        {
+          script_type?: ScriptType;
+        }[];
     },
     params?: { includeToSignTx?: boolean },
   ) {
