@@ -11,7 +11,7 @@ export class AddressApi extends BaseApi {
   async getAddressBalance(
     address: string,
     params?: {
-      omitWalletAddress?: boolean;
+      omitWalletAddresses?: boolean;
     },
   ) {
     const response = await this.axios.get<
@@ -35,7 +35,7 @@ export class AddressApi extends BaseApi {
       limit?: number;
       confirmations?: number;
       confidence?: number;
-      omitWalletAddress?: boolean;
+      omitWalletAddresses?: boolean;
     },
   ) {
     const response = await this.axios.get<Address>(`/addrs/${address}`, {
@@ -57,7 +57,7 @@ export class AddressApi extends BaseApi {
       legacyaddrs?: boolean;
       includeHex?: boolean;
       includeConfidence?: boolean;
-      omitWalletAddress?: boolean;
+      omitWalletAddresses?: boolean;
     },
   ) {
     const response = await this.axios.get<Address>(`/addrs/${address}/full`, {
