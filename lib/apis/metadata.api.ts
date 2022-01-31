@@ -25,9 +25,14 @@ export class MetadataApi extends BaseApi {
     metadata: Metadata,
     params?: MetadataParams,
   ) {
-    await this.axios.put<Metadata>(`${type}/${value}/meta`, metadata, {
-      params,
-    });
+    const response = await this.axios.put<Metadata>(
+      `${type}/${value}/meta`,
+      metadata,
+      {
+        params,
+      },
+    );
+    return response.data;
   }
 
   /** https://www.blockcypher.com/dev/bitcoin/#delete-metadata-endpoint */
