@@ -22,12 +22,28 @@ const client = new Client({
   //token: ...
 });
 
-client.apis.transaction
-  .getUnconfirmedTransactions()
-  .then(console.log)
-  .catch(console.error);
+// ...
+
+const utxs = await client.apis.bitcoin.transaction.getUnconfirmedTransactions();
+```
+
+For batching:
+
+```ts
+import { Client } from 'blockcypher-apis';
+import type { bitcoin } from 'blockcypher-apis';
+
+// ...
+
+const blocks = (await client.apis.bitcoin.blockchain.getBlockByHash(
+  '1;2;3',
+)) as bitcoin.Block[];
 ```
 
 ## Recipes
 
 Check [this directory](https://github.com/agent-ly/blockcypher-apis/tree/main/recipes) for some neat tools and integrations with other popular libraries such as [bitcoinjs-lib](https://github.com/bitcoinjs/bitcoinjs-lib)
+
+## TODO
+
+- Implement ETH interface

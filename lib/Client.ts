@@ -1,6 +1,6 @@
 import Axios, { AxiosError, AxiosInstance } from 'axios';
 import type { Chain, Coin } from './types';
-import * as Apis from './apis';
+import { bitcoin } from './apis';
 
 export interface ClientOptions {
   coin: Coin;
@@ -49,14 +49,16 @@ export interface TokenLimitsResponse {
 export class Client {
   public readonly axios: AxiosInstance;
   public readonly apis: {
-    blockchain: Apis.BlockchainApi;
-    address: Apis.AddressApi;
-    wallet: Apis.WalletApi;
-    transaction: Apis.TransactionApi;
-    metadata: Apis.MetadataApi;
-    asset: Apis.AssetApi;
-    addressForwarding: Apis.AddressForwardingApi;
-    webhook: Apis.WebhookApi;
+    bitcoin: {
+      blockchain: bitcoin.BlockchainApi;
+      address: bitcoin.AddressApi;
+      wallet: bitcoin.WalletApi;
+      transaction: bitcoin.TransactionApi;
+      metadata: bitcoin.MetadataApi;
+      asset: bitcoin.AssetApi;
+      addressForwarding: bitcoin.AddressForwardingApi;
+      webhook: bitcoin.WebhookApi;
+    };
   };
 
   constructor(private readonly clientOptions: ClientOptions) {
@@ -85,28 +87,59 @@ export class Client {
     });
 
     this.apis = {
-      blockchain: new Apis.BlockchainApi(this),
-      address: new Apis.AddressApi(this),
-      wallet: new Apis.WalletApi(this),
-      transaction: new Apis.TransactionApi(this),
-      metadata: new Apis.MetadataApi(this),
-      asset: new Apis.AssetApi(this),
-      addressForwarding: new Apis.AddressForwardingApi(this),
-      webhook: new Apis.WebhookApi(this),
+      bitcoin: {
+        blockchain: new bitcoin.BlockchainApi(this),
+        address: new bitcoin.AddressApi(this),
+        wallet: new bitcoin.WalletApi(this),
+        transaction: new bitcoin.TransactionApi(this),
+        metadata: new bitcoin.MetadataApi(this),
+        asset: new bitcoin.AssetApi(this),
+        addressForwarding: new bitcoin.AddressForwardingApi(this),
+        webhook: new bitcoin.WebhookApi(this),
+      },
     };
+  }
+
+  getCoin() {
+    return this.clientOptions.coin;
+  }
+
+  getChain() {
+    return this.clientOptions.chain;
+  }
+
+  getToken() {
+    return this.clientOptions.token;
+  }
+
+  setCoin(coin: Coin) {
+    this.clientOptions.coin = coin;
+    this.rebuildBaseUrl();
+    return this;
+  }
+
+  setChain(chain: Chain) {
+    this.clientOptions.chain = chain;
+    this.rebuildBaseUrl();
+    return this;
+  }
+
+  duplicate() {
+    return new Client(this.clientOptions);
+  }
+
+  private rebuildBaseUrl() {
+    this.axios.defaults.baseURL = `https://api.blockcypher.com/v1/${this.clientOptions.coin}/${this.clientOptions.chain}`;
   }
 
   async faucet(address: string, amount: number) {
     if (
       this.clientOptions.coin !== 'bcy' &&
-      this.clientOptions.coin !== 'btc'
+      this.clientOptions.coin !== 'beth'
     ) {
       throw new Error('Unsupported coin');
     }
-    if (
-      this.clientOptions.chain !== 'test' &&
-      this.clientOptions.chain !== 'test3'
-    ) {
+    if (this.clientOptions.chain !== 'test') {
       throw new Error('Unsupported chain');
     }
     if (amount > 1e8) throw new Error('Amount too large');

@@ -1,15 +1,15 @@
-import type { TransactionSkeleton } from "blockcypher-apis";
-import { script } from "bitcoinjs-lib";
-import type { Network } from "bitcoinjs-lib";
-import { ECPairFactory } from "ecpair";
-import type { ECPairInterface } from "ecpair";
-import * as ecc from "tiny-secp256k1";
+import { script } from 'bitcoinjs-lib';
+import type { Network } from 'bitcoinjs-lib';
+import { ECPairFactory } from 'ecpair';
+import type { ECPairInterface } from 'ecpair';
+import * as ecc from 'tiny-secp256k1';
+import type { bitcoin } from '../lib';
 
 const ECPair = ECPairFactory(ecc);
 
 export const BlockCypherNetwork: Network = {
-  messagePrefix: "\x18Bitcoin Signed Message:\n",
-  bech32: "bcy",
+  messagePrefix: '\x18Bitcoin Signed Message:\n',
+  bech32: 'bcy',
   // bip32 & bip44
   bip32: {
     // B/c their bip84 prefixes align w/ the testnet prefixes
@@ -33,27 +33,27 @@ export const fromWIF = (wif: string, network?: Network) =>
   ECPair.fromWIF(wif, network);
 
 export const fromPublicKeyHex = (publicKeyHex: string, network?: Network) => {
-  const publicKey = Buffer.from(publicKeyHex, "hex");
+  const publicKey = Buffer.from(publicKeyHex, 'hex');
   return ECPair.fromPublicKey(publicKey, { network });
 };
 
 export const fromPrivateKeyHex = (privateKeyHex: string, network?: Network) => {
-  const privateKey = Buffer.from(privateKeyHex, "hex");
+  const privateKey = Buffer.from(privateKeyHex, 'hex');
   return ECPair.fromPrivateKey(privateKey, { network });
 };
 
 export const getSignatureHex = (
   keyPair: ECPairInterface,
   dataHex: string,
-  hashType: number = 0x01
+  hashType: number = 0x01,
 ) =>
   script.signature
-    .encode(keyPair.sign(Buffer.from(dataHex, "hex")), hashType)
-    .toString("hex");
+    .encode(keyPair.sign(Buffer.from(dataHex, 'hex')), hashType)
+    .toString('hex');
 
-export interface SignTransactionOptions {
+export interface SignTransactionPayload {
   keyPair: ECPairInterface;
-  transactionSkeleton: TransactionSkeleton;
+  transactionSkeleton: bitcoin.TransactionSkeleton;
   network?: Network;
   /** BlockCypher automatically appends the SIGHASH_ALL OP code at the end of non-segwit transactions */
   isSegWit?: boolean;
@@ -66,16 +66,16 @@ export const signTransactionSkeleton = ({
   transactionSkeleton,
   isSegWit,
   hashType,
-}: SignTransactionOptions) => {
+}: SignTransactionPayload) => {
   if (!isSegWit && hashType)
     throw new Error(
-      "Non-SegWit BlockCypher transactions can not have a hash type"
+      'Non-SegWit BlockCypher transactions can not have a hash type',
     );
   if (isSegWit && !hashType)
-    throw new Error("SegWit transactions must have a hash type");
+    throw new Error('SegWit transactions must have a hash type');
   transactionSkeleton.pubkeys = [];
   transactionSkeleton.signatures = [];
-  const publicKeyHex = keyPair.publicKey.toString("hex");
+  const publicKeyHex = keyPair.publicKey.toString('hex');
   for (const dataHex of transactionSkeleton.tosign) {
     transactionSkeleton.pubkeys.push(publicKeyHex);
     let signatureHex = getSignatureHex(keyPair, dataHex, hashType);

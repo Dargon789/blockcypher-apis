@@ -1,5 +1,5 @@
 import { ecdsaSign, signatureExport } from 'secp256k1';
-import type { TransactionSkeleton } from '../lib';
+import type { bitcoin } from '../lib';
 
 export const getSignatureHex = (dataHex: string, privateKeyHex: string) => {
   const { signature } = ecdsaSign(
@@ -9,12 +9,13 @@ export const getSignatureHex = (dataHex: string, privateKeyHex: string) => {
   return Buffer.from(signatureExport(signature)).toString('hex');
 };
 
+// This has been tested for P2PKH transactions only
 export const signTransactionSkeleton = (
   keyPairHex: {
     publicKey: string;
     privateKey: string;
   },
-  transactionSkeleton: TransactionSkeleton,
+  transactionSkeleton: bitcoin.TransactionSkeleton,
 ) => {
   transactionSkeleton.pubkeys = [];
   transactionSkeleton.signatures = [];
