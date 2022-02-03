@@ -124,8 +124,8 @@ export class Client {
     return this;
   }
 
-  duplicate() {
-    return new Client(this.clientOptions);
+  clone() {
+    return new Client({ ...this.clientOptions });
   }
 
   private rebuildBaseUrl() {
