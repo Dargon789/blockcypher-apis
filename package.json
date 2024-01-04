@@ -30,7 +30,7 @@
     "release": "release-it -y"
   },
   "dependencies": {
-    "axios": "^0.25.0"
+    "axios": "^1.6.0"
   },
   "devDependencies": {
     "@types/node": "^17.0.13",
