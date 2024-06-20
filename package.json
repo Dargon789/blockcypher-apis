@@ -38,7 +38,7 @@
     "bitcoinjs-lib": "^6.0.1",
     "ecpair": "^2.0.1",
     "prettier": "^2.4.1",
-    "release-it": "^14.11.6",
+    "release-it": "^17.3.0",
     "rimraf": "^3.0.2",
     "secp256k1": "^4.0.2",
     "tiny-secp256k1": "^2.2.0",
