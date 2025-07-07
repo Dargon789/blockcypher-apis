@@ -35,7 +35,7 @@
   "devDependencies": {
     "@types/node": "^22.14.1",
     "@types/secp256k1": "^4.0.3",
-    "bitcoinjs-lib": "^6.0.1",
+    "bitcoinjs-lib": "^6.1.1",
     "ecpair": "^2.0.1",
     "prettier": "^3.5.3",
     "release-it": "^17.3.0",
